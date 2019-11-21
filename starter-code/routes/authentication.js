@@ -1,8 +1,28 @@
 const { Router } = require('express');
 const router = new Router();
-
+const uploader = require('./../middleware/uploader');
+const multer = require('multer');
 const User = require('./../models/user');
 const bcryptjs = require('bcryptjs');
+const cloudinary = require('cloudinary');
+const storageCloudinary = require('multer-storage-cloudinary');
+require('dotenv').config();
+
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDINARY_API_NAME,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET
+// });
+
+// const storage = storageCloudinary({
+//   cloudinary,
+//   folder: 'profile-pics',
+//   allowedFormats: ['jpg', 'png']
+// });
+
+// const uploader = multer({
+//   storage
+// });
 
 router.get('/', (req, res, next) => {
   res.render('index');
@@ -12,15 +32,24 @@ router.get('/sign-up', (req, res, next) => {
   res.render('sign-up');
 });
 
-router.post('/sign-up', (req, res, next) => {
+const uploadVar = uploader.single('profile-pics');
+
+router.post('/sign-up', uploadVar, (req, res, next) => {
   const { name, email, password } = req.body;
+  const fileUrl = null;
+  if (req.file) {
+    fileUrl = req.file.url;
+  }
+  console.log('router.post has been called');
+  console.log('this is the req.file' + req.file);
   bcryptjs
     .hash(password, 10)
     .then(hash => {
       return User.create({
         name,
         email,
-        passwordHash: hash
+        passwordHash: hash,
+        picture: fileUrl
       });
     })
     .then(user => {
