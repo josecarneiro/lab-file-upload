@@ -1,0 +1,8 @@
+<h1>My profile</h1>
+
+{{#with user}}
+  <p>Name:  {{ name }}</p>
+  {{#if profilePic}}
+    <img src="{{ profilePic }}" alt="{{ name }}'s profile picture'" />
+  {{/if}}
+{{/with}}

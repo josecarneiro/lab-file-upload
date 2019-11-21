@@ -8,24 +8,47 @@ router.get('/', (req, res, next) => {
   res.render('index');
 });
 
-router.get('/sign-up', (req, res, next) => {
-  res.render('sign-up');
+const multer = require('multer');
+const cloudinary = require('cloudinary');
+const storageCloudinary = require('multer-storage-cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_API_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-router.post('/sign-up', (req, res, next) => {
+const storage = storageCloudinary({
+  cloudinary,
+  folder: 'irontumblr',
+  allowedFormats: ['jpg', 'png']
+});
+
+const uploader = multer({
+  storage
+});
+
+router.get('/sign-up', (req, res, next) => {
+  res.render('auth/sign-up');
+});
+
+router.post('/sign-up', uploader.single('profilePic'), (req, res, next) => {
   const { name, email, password } = req.body;
+  // console.log(req.body);
+  const profileUrl = req.file.secure_url;
   bcryptjs
     .hash(password, 10)
     .then(hash => {
       return User.create({
         name,
         email,
-        passwordHash: hash
+        passwordHash: hash,
+        profilePic: profileUrl
       });
     })
     .then(user => {
       req.session.user = user._id;
-      res.redirect('/');
+      res.redirect('/profile');
     })
     .catch(error => {
       next(error);
@@ -33,7 +56,7 @@ router.post('/sign-up', (req, res, next) => {
 });
 
 router.get('/sign-in', (req, res, next) => {
-  res.render('sign-in');
+  res.render('auth/sign-in');
 });
 
 router.post('/sign-in', (req, res, next) => {
@@ -70,6 +93,17 @@ const routeGuard = require('./../middleware/route-guard');
 
 router.get('/private', routeGuard, (req, res, next) => {
   res.render('private');
+});
+
+router.get('/profile/:id', routeGuard, (req, res, next) => {
+  // res.render('private');
+  // console.log(req.user);
+  User.findById(req.params.id)
+  .then(user => {
+    console.log("Found user", user);
+    res.render('auth/profile', { user: user });
+  })
+  .catch(error => next(error))
 });
 
 module.exports = router;
