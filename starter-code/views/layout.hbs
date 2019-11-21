@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>{{title}}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/styles/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/bootstrap/shards.min.css">
     <link rel="stylesheet" href="/styles/style.css" />
   </head>
   <body>
@@ -12,7 +13,8 @@
       <a href="/">Home</a>
       {{!-- Display relevant routes for non-authenticated vs. authenticated user --}}
       {{#if user}}
-        <a href="/">{{user.name}}'s Profile</a>
+        <a href="/profile/{{user._id}}">{{user.name}}'s Profile</a>
+        <a href="/posts">Posts</a>
         <form action="/sign-out" method="POST">
           <button>Sign Out</button>
         </form>

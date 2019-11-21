@@ -12,6 +12,8 @@ const MongoStore = connectMongo(expressSession);
 
 const indexRouter = require('./routes/index');
 const authenticationRouter = require('./routes/authentication');
+const postsRouter = require('./routes/posts');
+const profileRouter = require('./routes/profile');
 const User = require('./models/user');
 
 const app = express();
@@ -73,6 +75,8 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/', authenticationRouter);
+app.use('/profile', profileRouter);
+app.use('/posts', postsRouter);
 
 app.use('*', (req, res, next) => {
   const error = new Error('Page not found.');
