@@ -9,8 +9,14 @@
     <h2>Sign in to post</h2>
 {{/if}}
 
-{{#each data.posts}}
-    <div>
-        <p>{{this.content}}</p>
-    </div>
-{{/each}}
+<div>
+    <h1>Posts</h1>
+    {{#each posts}}
+        <div>
+            <img src={{this.imgUrl}} alt="">
+            <h4>{{this.content}}</p>
+            <h5>{{this.author.name}}</h5>
+            <h6>{{this.createdAt}}</h6>
+        </div>
+    {{/each}}
+</div>

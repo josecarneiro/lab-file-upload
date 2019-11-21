@@ -2,12 +2,12 @@
 const router = require('express').Router();
 const imgUploader = require("../middleware/image-uploader");
 const Post = require("../models/post");
+const User = require("../models/user");
 
 router.get('/', (req, res, next) => {
-    // FIXME: This is breaking
-    Post.find().then(posts => {
-        console.log(posts)
-        res.render('postList', {data: posts});
+    Post.find().populate("author").then(posts => {
+        console.log(posts);
+        res.render('postList', {posts});
     });
 });
 
@@ -19,8 +19,8 @@ router.post('/post', imgUploader.single("image"), (req, res, next) => {
             content,
             imgUrl,
             author: req.user._id
-        }).then(response => {
-            res.render("postList");
+        }).then(post => {
+            res.redirect("/posts");
         })
     } else {
         next(new Error("no User"));
