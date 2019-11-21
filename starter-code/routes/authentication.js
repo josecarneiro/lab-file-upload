@@ -1,5 +1,7 @@
 const { Router } = require('express');
 const router = new Router();
+const express = require('express');
+const uploadCloud = require('../config/cloudinary.js');
 
 const User = require('./../models/user');
 const bcryptjs = require('bcryptjs');
@@ -12,20 +14,26 @@ router.get('/sign-up', (req, res, next) => {
   res.render('sign-up');
 });
 
-router.post('/sign-up', (req, res, next) => {
+router.post('/sign-up', uploadCloud.single('profile'), (req, res, next) => {
   const { name, email, password } = req.body;
+  const imgPath = req.file.url;
+  const imgName = req.file.originalname;
   bcryptjs
     .hash(password, 10)
     .then(hash => {
       return User.create({
         name,
         email,
-        passwordHash: hash
+        passwordHash: hash,
+        imgPath,
+        imgName
       });
     })
     .then(user => {
       req.session.user = user._id;
-      res.redirect('/');
+      let id = user._id
+      console.log(id)
+      res.redirect(`/${id}`);
     })
     .catch(error => {
       next(error);
@@ -51,7 +59,7 @@ router.post('/sign-in', (req, res, next) => {
     .then(result => {
       if (result) {
         req.session.user = userId;
-        res.redirect('/');
+        res.redirect(`/`);
       } else {
         return Promise.reject(new Error('Wrong password.'));
       }

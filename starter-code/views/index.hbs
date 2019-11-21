@@ -1,1 +1,8 @@
-<p>Welcome to our Lab!</p>
+<h2>List Posts</h2>
+
+{{#each posts}}
+  <a href="/post/{{ this._id }}">
+    {{> singlepost}}
+  </a>
+  <a href = "/comment/make">Comment</a>
+{{/each}}

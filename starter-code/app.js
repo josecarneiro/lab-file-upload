@@ -1,6 +1,8 @@
 const { join } = require('path');
 const express = require('express');
 const logger = require('morgan');
+const hbs = require('hbs');
+const path = require('path');
 const sassMiddleware = require('node-sass-middleware');
 
 const mongoose = require('mongoose');
@@ -12,7 +14,11 @@ const MongoStore = connectMongo(expressSession);
 
 const indexRouter = require('./routes/index');
 const authenticationRouter = require('./routes/authentication');
+const profileRouter = require('./routes/profile');
+const postRouter = require('./routes/post');
 const User = require('./models/user');
+
+hbs.registerPartials(path.join(__dirname, 'views/partials'));
 
 const app = express();
 
@@ -73,6 +79,9 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/', authenticationRouter);
+app.use('/', profileRouter);
+app.use('/post', postRouter);
+app.use('/comment', postRouter);
 
 app.use('*', (req, res, next) => {
   const error = new Error('Page not found.');
