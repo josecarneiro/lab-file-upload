@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema(
     {
-        content : {
+        text : {
         type: String,
         required: true,
         maxlength: 140,
         minlength: 1
       },
-      creatorID: {
+      author: {
         type: mongoose.Types.ObjectId,
         required: true,
         ref: 'User'
