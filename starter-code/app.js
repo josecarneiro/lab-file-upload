@@ -3,6 +3,8 @@ const express = require('express');
 const logger = require('morgan');
 const sassMiddleware = require('node-sass-middleware');
 
+const serveFavicon = require('serve-favicon');
+
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
