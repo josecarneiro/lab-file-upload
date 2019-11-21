@@ -1,0 +1,8 @@
+<h1>Create post</h1>
+
+<form action="/post/create/{{user.id}}" method="POST" enctype="multipart/form-data">
+    <textarea name="content" id="" cols="30" maxlength="140" placeholder="Write your text here..."
+        required>Content</textarea>
+    <input type="file" name="images" multiple />
+    <button class="btn">Publish</button>
+</form>
