@@ -1,0 +1,19 @@
+<h2>Single Post</h2>
+
+{{#with post}}
+  {{> singlepost}}
+{{/with}}
+
+{{#each comment}}
+  
+  {{> singlecomment}}
+  
+{{/each}}
+
+<h2>Create a new Comment</h2>
+
+<form action="/{{post._id}}/make" method="POST" enctype="multipart/form-data">
+  <textarea name="text" maxlength="140" placeholder="Write your comment here..." required></textarea>
+  <input type="file" name="image"/>
+  <button class="btn">Comment</button>
+</form>
