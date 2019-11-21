@@ -1,0 +1,10 @@
+{{!--  --}}
+<p>allposts being loaded</p>
+{{#each data}}
+
+<div style="background-color: darkgoldenrod;">
+    <p>{{this.content}}</p>
+</div>
+<div class="pic-box"><img src={{this.picture}}></div>
+
+{{/each}}
