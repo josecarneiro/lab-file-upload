@@ -8,7 +8,9 @@ router.get('/', (req, res, next) => {
   res.render('index', { title: 'Hello World!' });
 });
 
-router.get('/private', (req, res, next) => {
+const routeGuard = require("./../middleware/route-guard");
+
+router.get('/private', routeGuard, (req, res, next) => {
   res.render('private');
 });
 
