@@ -12,11 +12,16 @@
       <a href="/">Home</a>
       {{!-- Display relevant routes for non-authenticated vs. authenticated user --}}
       {{#if user}}
-        <a href="/">{{user.name}}'s Profile</a>
+        <a href="/profile">{{user.name}}'s Profile</a>
         <form action="/sign-out" method="POST">
           <button>Sign Out</button>
         </form>
+        <div class="posts-nav">
+          <a href="/posts">View Posts</a>
+          <a href="/posts/create">Create Post</a>
+        </div>
         {{else}}
+        <a href="/posts" class="posts-nav">View Posts</a>
         <a href="/sign-in">Sign In</a>
         <a href="/sign-up">Sign Up</a>
       {{/if}}

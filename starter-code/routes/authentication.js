@@ -12,7 +12,33 @@ router.get('/sign-up', (req, res, next) => {
   res.render('sign-up');
 });
 
-router.post('/sign-up', (req, res, next) => {
+const multer = require('multer');
+const cloudinary = require('cloudinary');
+const storageCloudinary = require('multer-storage-cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_API_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const storage = storageCloudinary({
+  cloudinary,
+  folder: 'lab-file-upload',
+  allowedFormats: ['jpg', 'png']
+});
+
+const uploader = multer({
+  storage
+});
+
+router.post('/sign-up', uploader.single('file'), (req, res, next) => {
+  let cloudinaryImg = ""
+  if(!req.file){
+    cloudinaryImg = undefined;
+  }else{
+    cloudinaryImg = req.file.url
+  }
   const { name, email, password } = req.body;
   bcryptjs
     .hash(password, 10)
@@ -20,7 +46,8 @@ router.post('/sign-up', (req, res, next) => {
       return User.create({
         name,
         email,
-        passwordHash: hash
+        passwordHash: hash,
+        profilePicture: cloudinaryImg
       });
     })
     .then(user => {
@@ -51,7 +78,7 @@ router.post('/sign-in', (req, res, next) => {
     .then(result => {
       if (result) {
         req.session.user = userId;
-        res.redirect('/');
+        res.redirect('/profile');
       } else {
         return Promise.reject(new Error('Wrong password.'));
       }
@@ -68,8 +95,16 @@ router.post('/sign-out', (req, res, next) => {
 
 const routeGuard = require('./../middleware/route-guard');
 
-router.get('/private', routeGuard, (req, res, next) => {
-  res.render('private');
+router.get('/profile', routeGuard, (req, res, next) => {
+  const userID = req.session.user
+  User.findById(userID)
+  .then(user => {
+    res.render('profile', { user });
+  })
+  .catch (error =>{
+    next (error)
+  })
 });
+
 
 module.exports = router;
