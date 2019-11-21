@@ -1,4 +1,6 @@
-const { Router } = require('express');
+const {
+  Router
+} = require('express');
 const router = new Router();
 
 const User = require('./../models/user');
@@ -13,7 +15,11 @@ router.get('/sign-up', (req, res, next) => {
 });
 
 router.post('/sign-up', (req, res, next) => {
-  const { name, email, password } = req.body;
+  const {
+    name,
+    email,
+    password
+  } = req.body;
   bcryptjs
     .hash(password, 10)
     .then(hash => {
@@ -38,8 +44,13 @@ router.get('/sign-in', (req, res, next) => {
 
 router.post('/sign-in', (req, res, next) => {
   let userId;
-  const { email, password } = req.body;
-  User.findOne({ email })
+  const {
+    email,
+    password
+  } = req.body;
+  User.findOne({
+      email
+    })
     .then(user => {
       if (!user) {
         return Promise.reject(new Error("There's no user with that email."));
@@ -71,5 +82,7 @@ const routeGuard = require('./../middleware/route-guard');
 router.get('/private', routeGuard, (req, res, next) => {
   res.render('private');
 });
+
+
 
 module.exports = router;
