@@ -1,0 +1,15 @@
+<h1>Look all the posts we have!</h1>
+<div class="posts">
+{{#each posts}}
+    <a href="/posts/{{this._id}}">
+        <div class="single-post">
+            <h4>{{this.content}}</h4>
+            <div class="post-image">
+                <img src={{this.picPath}} alt="">
+            </div>
+            <p>{{this.creatorId.name}}</p>
+            <p>{{this.createdAt}}</p>
+        </div>
+    </a>
+{{/each}}
+</div>

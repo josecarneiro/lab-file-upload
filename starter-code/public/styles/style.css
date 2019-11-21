@@ -5,3 +5,64 @@ body {
 
 a {
   color: #00b7ff; }
+
+nav {
+  display: flex;
+  flex-direction: row;
+  width: 95vw;
+  margin: 0 auto; }
+
+nav button {
+  background: inherit;
+  color: #00b7ff;
+  border: 0px;
+  padding-left: 1em; }
+
+nav a {
+  padding-left: 1em;
+  padding-right: 1em; }
+
+.posts-nav {
+  float: right; }
+
+.profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 2em;
+  width: 80em; }
+
+.profile h1 {
+  margin-left: 1em; }
+
+.profile-pic-container {
+  width: 4em; }
+
+img {
+  width: 100%; }
+
+.posts {
+  width: 60vw;
+  margin: 0 auto; }
+
+.posts a {
+  color: black; }
+
+.posts h4 {
+  padding: 0.7em; }
+
+.single-post {
+  display: flex;
+  flex-direction: column;
+  border: 1px #dad1d1 solid;
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 0.5em; }
+
+.post-image {
+  width: 70%;
+  margin: 0 auto; }
+
+.posts p {
+  padding-left: 0.3em;
+  margin: 0; }

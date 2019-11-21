@@ -8,8 +8,8 @@ router.get('/', (req, res, next) => {
   res.render('index', { title: 'Hello World!' });
 });
 
-router.get('/private', (req, res, next) => {
-  res.render('private');
-});
+// router.get('/private', (req, res, next) => {
+//   res.render('private');
+// });
 
 module.exports = router;
