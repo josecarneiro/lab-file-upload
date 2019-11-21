@@ -1,4 +1,7 @@
-<form action="/sign-up" method="POST">
+<form action="/sign-up" method="POST" enctype="multipart/form-data">
+  <input type="file" name="file">
+  <input type="name" name="title">
+
   <label for="input-name">Name</label>
   <input type="text" id="input-name" name="name" placeholder="Your Name" />
   <label for="input-email">Email</label>
@@ -6,4 +9,5 @@
   <label for="input-password">Password</label>
   <input type="password" name="password" id="input-password" placeholder="A Strong Password" />
   <button>Sign Up</button>
+
 </form>
