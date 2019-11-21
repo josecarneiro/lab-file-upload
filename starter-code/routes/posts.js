@@ -4,6 +4,7 @@ const imgUploader = require("../middleware/image-uploader");
 const Post = require("../models/post");
 
 router.get('/', (req, res, next) => {
+    // FIXME: This is breaking
     Post.find().then(posts => {
         console.log(posts)
         res.render('postList', {data: posts});
