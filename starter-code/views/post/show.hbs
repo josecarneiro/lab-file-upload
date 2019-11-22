@@ -1,0 +1,16 @@
+<h1>SHOW/SINGLE POST</h1>
+
+
+{{#with post}}
+  <div class="single-post">
+  {{#each this.images}}
+    <img src={{this.resizedUrl}}>
+  {{/each}}
+  <p>{{ this.text }}</p>
+  <small>{{ this.creationDate }}</small>
+  <br />
+  <small>{{ this.author.name }}</small>
+</div>
+{{/with}}
+
+<a href="/post/{{post._id}}/edit" class="btn">Edit Post</a>
