@@ -1,0 +1,9 @@
+<div >
+  {{#each this.images}}
+    <img src={{this.resizedUrl}}>
+  {{/each}}
+  <p>{{ this.content }}</p>
+  <small>{{ this.creatorId.name }}</small>
+  <br />
+  <small>{{ this.creationDate }}</small>
+</div>

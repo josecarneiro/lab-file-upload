@@ -1,15 +1,16 @@
-'use strict';
+"use strict";
 
-const { Router } = require('express');
+const { Router } = require("express");
 const router = new Router();
 
-router.get('/', (req, res, next) => {
-  console.log(req.user);
-  res.render('index', { title: 'Hello World!' });
+const uploadCloud = require("../middleware/cloudinary.js");
+
+router.get("/", (req, res, next) => {
+  res.render("index", { title: "Hello World!" });
 });
 
-router.get('/private', (req, res, next) => {
-  res.render('private');
+router.get("/private", (req, res, next) => {
+  res.render("private");
 });
 
 module.exports = router;

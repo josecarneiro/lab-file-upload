@@ -1,1 +1,18 @@
-<p>Welcome to our Lab!</p>
+
+
+<div id="main">
+  <img class="mb-1" src="https://user-images.githubusercontent.com/23629340/40541063-a07a0a8a-601a-11e8-91b5-2f13e4e6b441.png" alt="">
+  {{#if user}}
+   <form action="/post/new" method="GET">
+   <button class="button-main">Create a Post</button>
+   </form>
+   <form action="/post/" method="GET">
+    <button class="mt-2 button-main">See Posts</button>
+   </form>
+  {{else}}
+  <p class="mt-1">Welcome to File Uploads Lab</p>
+   <form action="/post/" method="GET">
+    <button class="button-main">See Posts</button>
+   </form>
+  {{/if}}
+</div>
