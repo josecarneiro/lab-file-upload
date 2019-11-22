@@ -9,12 +9,13 @@ const expressSession = require('express-session');
 const connectMongo = require('connect-mongo');
 
 const MongoStore = connectMongo(expressSession);
-
+const postRouter = require('./routes/post');
 const indexRouter = require('./routes/index');
 const authenticationRouter = require('./routes/authentication');
 const User = require('./models/user');
 
 const app = express();
+const hbs = require('hbs');
 
 app.set('views', join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -73,6 +74,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/', authenticationRouter);
+app.use('/post', postRouter);
 
 app.use('*', (req, res, next) => {
   const error = new Error('Page not found.');
