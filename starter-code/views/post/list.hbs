@@ -1,0 +1,11 @@
+<h1>Here we will see the list of posts</h1>
+
+{{#each posts}}
+<div>
+    <p>{{this.content}}</p>
+    <img src={{this.picPath}} alt="this will be an image" width='20%'>
+    <p>{{this.createdAt}}</p>
+    <a href="{{this._id}}">View post</a>
+</div>
+
+{{/each}}

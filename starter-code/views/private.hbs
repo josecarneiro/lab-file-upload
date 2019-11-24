@@ -1,1 +1,5 @@
-<h1>This page should only be accessible to authenticated users</h1>
+<h1>Profile</h1>
+ <p>Name: {{ user.name }}</p>
+{{#each user.images}}
+<img src={{this.resizedUrl}}>
+{{/each}}
