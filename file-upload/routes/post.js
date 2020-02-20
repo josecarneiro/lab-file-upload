@@ -6,6 +6,33 @@ const Post = require('./../models/post');
 const routeGuard = require('./../middleware/route-guard');
 const bindUser = require('./../middleware/bind-user-to-view-locals');
 
+//GET Routes
+
+router.get('/', (req, res, next) => {
+  Post.find()
+    .limit(10)
+    .then(posts => {
+      res.render('post/index', { posts });
+    })
+    .catch(error => {
+      next(error);
+    });
+});
+
+router.get('/create', (req, res, next) => {
+  res.render('post/create');
+});
+
+router.get('/:id', (req, res, next) => {
+  Post.findById(req.params.id)
+    .then(post => {
+      res.render('post/show', { post });
+    })
+    .catch(error => {
+      next(error);
+    });
+});
+
 // cloudinary and multer config
 const multer = require('multer');
 const cloudinary = require('cloudinary');
@@ -25,19 +52,24 @@ const storage = multerStorageCloudinary({
 
 const uploader = multer({ storage });
 
-router.post('/create', routeGuard, bindUser, uploader.single('picture'), (req, res, next) => {
-  const { author } = req.user._id;
+router.post('/create', routeGuard, uploader.single('picture'), (req, res, next) => {
+  const creatorID = req.user._id;
   const { pictureName, content } = req.body;
   const { url } = req.file;
+  console.log(creatorID);
 
   Post.create({
     picName: pictureName,
     content,
     picPath: url,
-    creatorID: author
+    creatorID
   })
-  .then(post =>)
-
+    .then(post => {
+      res.redirect(`/post/${post._id}`, { post });
+    })
+    .catch(error => {
+      next(error);
+    });
 });
 
 module.exports = router;

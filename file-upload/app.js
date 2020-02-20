@@ -15,11 +15,16 @@ const bindUserToViewLocals = require('./middleware/bind-user-to-view-locals.js')
 const indexRouter = require('./routes/index');
 const authenticationRouter = require('./routes/authentication');
 const postRouter = require('./routes/post');
+const commentRouter = require('./routes/comments');
+
+const hbs = require('hbs');
 
 const app = express();
 
 app.set('views', join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+
+hbs.registerPartials(join(__dirname, 'views/partials'));
 
 app.use(serveFavicon(join(__dirname, 'public/images', 'favicon.ico')));
 app.use(
@@ -58,6 +63,7 @@ app.use(bindUserToViewLocals);
 app.use('/', indexRouter);
 app.use('/authentication', authenticationRouter);
 app.use('/post', postRouter);
+app.use('/comment', commentRouter);
 
 // Catch missing routes and forward to error handler
 app.use((req, res, next) => {
