@@ -1,0 +1,14 @@
+<h1>Let's change this Post</h1>
+<form action="" method="POST" enctype="multipart/form-data">
+  
+  <label for='input-content'>Content</label>
+  <textarea name="content" id="input-content" value="{{content}}"></textarea>
+  
+
+  <label for='input-picName'>Picture Name</label>
+  <input type="text" id="input-picName" name="picName" value="{{ picName }}">
+
+  <label for='input-picture'>Picture</label>
+  <input type="file" accept="image/jpg,img/png" id="input-picture" name="picture">
+  <button>Edit Post</button>
+</form>

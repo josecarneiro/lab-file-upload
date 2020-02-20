@@ -1,0 +1,27 @@
+<h1>show one post with reviews</h1>
+
+<div class="card show" >
+  <div class="card-body">
+    <img class="card-img-top" src="{{picPath}}" alt="{{picName}}">
+    <h1 class="card-title">{{ picName }}</h1>
+    <p class="card-text"> {{content}}</p>
+  </div>
+  <a href="/post/{{ _id }}/edit" class="btn btn-outline-success"> edit </a>
+  <form action="/post/{{ _id }}/delete" method="POST"><button class="btn btn-outline-danger"> delete </button></form>
+</div>
+
+<form action="/reviews/add?post_id={{ _id }}" method="post">
+  <h5 class="form-text text-muted"> Add a review </h5>
+    <div class="form-group">
+      <label for="user" class='text-secondary'>Name:</label>
+      <input type="text" name="user" class="form-control" value="{{user.name}}"/>
+    </div>
+
+   <div class="form-group">
+      <label for="comments" class='text-secondary'>Comments:</label>
+      <textarea type="text" name="comments" class="form-control"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary card-link">ADD</button>
+  </form>
+</section>
