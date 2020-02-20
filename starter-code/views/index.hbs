@@ -1,1 +1,16 @@
-<p>Welcome to our Lab!</p>
+{{#each post}}
+<a href="/post/{{ _id }}" class="list-group-item list-group-item-action">
+<div class="card show" >
+  <div class="card-body">
+    <img class="card-img-top" src="{{picPath}}" alt="{{picName}}">
+    <h1 class="card-title">{{ picName }}</h1>
+    <p class="card-text"> {{content}}</p>
+  </div>
+  <p>+++++{{user.name}} not appearing user._id-----{{ creatorId}}</p>
+  <a href="/post/{{ _id }}/edit" class="btn btn-outline-success"> edit </a>
+  <form action="/post/{{ _id }}/delete" method="POST"><button class="btn btn-outline-danger"> delete </button></form>
+  {{!-- {{/if}} --}}
+
+</div>
+</a>
+{{/each}}
