@@ -4,20 +4,17 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      trim: true
-    },
-    email: {
-      type: String,
-      required: true,
-      lowercase: true,
-      trim: true
-    },
-    passwordHash: {
+    content: {
       type: String
     },
-    picture: {
+    creatorId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    picPath: {
+      type: String
+    },
+    picName: {
       type: String
     }
   },
@@ -30,4 +27,6 @@ const schema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('User', schema);
+
+
+module.exports = mongoose.model('Post', schema);
