@@ -1,31 +1,51 @@
+'use strict';
+
 const { Router } = require('express');
-const router = new Router();
 
-const User = require('./../models/user');
 const bcryptjs = require('bcryptjs');
+const User = require('./../models/user');
 
-router.get('/', (req, res, next) => {
-  res.render('index');
-});
+const router = new Router();
 
 router.get('/sign-up', (req, res, next) => {
   res.render('sign-up');
 });
 
-router.post('/sign-up', (req, res, next) => {
+// cloudinary and multer config
+const multer = require('multer');
+const cloudinary = require('cloudinary');
+const multerStorageCloudinary = require('multer-storage-cloudinary');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const storage = multerStorageCloudinary({
+  cloudinary,
+  folder: 'jan20',
+  allowedFormats: ['jpg', 'png', 'mov', 'mp4']
+});
+
+const uploader = multer({ storage });
+
+router.post('/sign-up', uploader.single('picture'), (req, res, next) => {
   const { name, email, password } = req.body;
+  const { url } = req.file;
   bcryptjs
     .hash(password, 10)
     .then(hash => {
       return User.create({
         name,
         email,
-        passwordHash: hash
+        passwordHash: hash,
+        picture: url
       });
     })
     .then(user => {
       req.session.user = user._id;
-      res.redirect('/');
+      res.redirect('/private');
     })
     .catch(error => {
       next(error);
@@ -37,21 +57,21 @@ router.get('/sign-in', (req, res, next) => {
 });
 
 router.post('/sign-in', (req, res, next) => {
-  let userId;
+  let user;
   const { email, password } = req.body;
   User.findOne({ email })
-    .then(user => {
-      if (!user) {
+    .then(document => {
+      if (!document) {
         return Promise.reject(new Error("There's no user with that email."));
       } else {
-        userId = user._id;
+        user = document;
         return bcryptjs.compare(password, user.passwordHash);
       }
     })
     .then(result => {
       if (result) {
-        req.session.user = userId;
-        res.redirect('/');
+        req.session.user = user._id;
+        res.redirect('/private');
       } else {
         return Promise.reject(new Error('Wrong password.'));
       }
@@ -64,12 +84,6 @@ router.post('/sign-in', (req, res, next) => {
 router.post('/sign-out', (req, res, next) => {
   req.session.destroy();
   res.redirect('/');
-});
-
-const routeGuard = require('./../middleware/route-guard');
-
-router.get('/private', routeGuard, (req, res, next) => {
-  res.render('private');
 });
 
 module.exports = router;
