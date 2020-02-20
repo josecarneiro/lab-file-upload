@@ -1,0 +1,35 @@
+<h1>POST</h1>
+
+{{#with post}}
+
+<h1>{{content}} </h1>
+<p>Created by: {{creatorId.name}}</p>
+<img src="{{picPath}}" alt="">
+<small>{{picName}}</small>
+
+
+<br>
+<br>
+<form action="/post/{{_id}}/comment" method="POST" enctype="multipart/form-data">
+<label for="content">Add a comment:</label>
+<input type="text" id="content" name="content" placeholder="Write a comment">
+
+<label for="imagePath"></label>
+<input type="file" id="imagePath" name="imagePath">
+
+<label for="imageName">Legend of image</label>
+<input type="text" id="imageName" name="imageName" placeholder="Insert a legend">
+
+<button>Comment</button>
+</form>
+
+
+{{#each children}}
+<h4>{{authorId}}</h4>
+<p>{{content}}</p>
+<img src="{{imagePath}}" alt="">
+<small>{{imageName}}</small>
+
+
+{{/each}}
+{{/with}}
