@@ -8,19 +8,48 @@
     <link rel="stylesheet" href="/styles/style.css" />
   </head>
   <body>
-    <nav>
+    <nav class=" mb-2 navbar ">
+    <div id="nav" class="nav justify-content-end ">
       <a href="/">Home</a>
       {{!-- Display relevant routes for non-authenticated vs. authenticated user --}}
       {{#if user}}
-        <a href="/">{{user.name}}'s Profile</a>
+        <a  class="ml-1 mr-1" href="/private">{{user.name}}'s Profile</a>
         <form action="/sign-out" method="POST">
-          <button>Sign Out</button>
+        <img src="{{user.avatar.url}}" alt="">
+          <button class="btn-1 btn-primary">Sign Out</button>
         </form>
         {{else}}
-        <a href="/sign-in">Sign In</a>
-        <a href="/sign-up">Sign Up</a>
+        <a class="ml-1" href="/sign-in">Sign In</a>
+        <a class="ml-1" href="/sign-up">Sign Up</a>
       {{/if}}
+    </div>
     </nav>
+    
+    
+{{!--     <nav class="navbar">
+          <a class="navbar-brand " href="#">
+            <img src="./images/logo.svg" alt=""></a>
+            <ul class="nav justify-content-end">
+                <li class="nav-item">
+                  <a class="nav-link active text-dark" href="#">Showcase</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-dark" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-dark" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="#">Careers</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link text-dark" href="#">Labs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Contact</a>
+                      </li>
+              </ul>
+        </nav> --}}
     {{{body}}}
   </body>
 </html>
