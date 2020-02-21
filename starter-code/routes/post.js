@@ -71,10 +71,11 @@ router.post('/:id/comment', uploader.single('imagePath'), (req, res, next) => {
   let post;
   const { id } = req.params;
   const { content, imageName } = req.body;
-  const url = req.file.url;
+  const url = req.file ? req.file.url : 'undefined';
+  const userId = req.user ? req.user._id : null;
   const data = {
     content,
-    authorId: req.user._id,
+    authorId: userId,
     imagePath: url,
     imageName
   };
