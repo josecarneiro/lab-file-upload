@@ -2,7 +2,7 @@
 
 require('dotenv').config();
 
-const debug = require('debug')('lab-file-upload:server');
+const debug = require('debug')('starter-code:server');
 const app = require('./app');
 const mongoose = require('mongoose');
 
@@ -45,6 +45,8 @@ const onError = error => {
 const onListening = server => {
   const { port } = server.address();
   debug(`Node server listening on ${port}`);
+  if (process.env.NODE_ENV === 'development')
+    debug(`Visit http://localhost:${port} to develop your app`);
 };
 
 const initiate = () => {
