@@ -3,34 +3,25 @@
 const { Router } = require('express');
 const router = new Router();
 const Post = require('./../models/post');
+const Comment = require('./../models/comment');
 const routeGuard = require('./../middleware/route-guard');
 const bindUser = require('./../middleware/bind-user-to-view-locals');
 
 //GET Routes
 
-router.get('/', (req, res, next) => {
+/* router.get('/', (req, res, next) => {
   Post.find()
-    .limit(10)
+    .limit(50)
     .then(posts => {
       res.render('post/index', { posts });
     })
     .catch(error => {
       next(error);
     });
-});
+}); */
 
-router.get('/create', (req, res, next) => {
+router.get('/create', routeGuard, (req, res, next) => {
   res.render('post/create');
-});
-
-router.get('/:id', (req, res, next) => {
-  Post.findById(req.params.id)
-    .then(post => {
-      res.render('post/show', { post });
-    })
-    .catch(error => {
-      next(error);
-    });
 });
 
 // cloudinary and multer config
@@ -66,6 +57,30 @@ router.post('/create', routeGuard, uploader.single('picture'), (req, res, next) 
   })
     .then(post => {
       res.redirect(`/post/${post._id}`, { post });
+    })
+    .catch(error => {
+      next(error);
+    });
+});
+
+router.get('/:id', (req, res, next) => {
+  const postId = req.params.id;
+
+  let post;
+
+  Post.findById(postId)
+    .then(document => {
+      if (!document) {
+        next(new Error('NOT_FOUND'));
+      } else {
+        post = document;
+        return Comment.find({ post: postId })
+          .populate('post')
+          .limit(50);
+      }
+    })
+    .then(comments => {
+      res.render('post/show', { post, comments });
     })
     .catch(error => {
       next(error);

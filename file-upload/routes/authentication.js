@@ -32,24 +32,43 @@ const uploader = multer({ storage });
 
 router.post('/sign-up', uploader.single('picture'), (req, res, next) => {
   const { name, email, password } = req.body;
-  const { url } = req.file;
-  bcryptjs
-    .hash(password, 10)
-    .then(hash => {
-      return User.create({
-        name,
-        email,
-        passwordHash: hash,
-        picture: url
+  if (req.file == null || undefined) {
+    bcryptjs
+      .hash(password, 10)
+      .then(hash => {
+        return User.create({
+          name,
+          email,
+          passwordHash: hash
+        });
+      })
+      .then(user => {
+        req.session.user = user._id;
+        res.redirect('/');
+      })
+      .catch(error => {
+        next(error);
       });
-    })
-    .then(user => {
-      req.session.user = user._id;
-      res.redirect('/private');
-    })
-    .catch(error => {
-      next(error);
-    });
+  } else {
+    const { url } = req.file;
+    bcryptjs
+      .hash(password, 10)
+      .then(hash => {
+        return User.create({
+          name,
+          email,
+          passwordHash: hash,
+          picture: url
+        });
+      })
+      .then(user => {
+        req.session.user = user._id;
+        res.redirect('/');
+      })
+      .catch(error => {
+        next(error);
+      });
+  }
 });
 
 router.get('/sign-in', (req, res, next) => {
@@ -71,7 +90,7 @@ router.post('/sign-in', (req, res, next) => {
     .then(result => {
       if (result) {
         req.session.user = user._id;
-        res.redirect('/private');
+        res.redirect('/');
       } else {
         return Promise.reject(new Error('Wrong password.'));
       }
