@@ -1,1 +1,8 @@
 <p>Welcome to our Lab!</p>
+
+{{#each posts}}
+    <img src={{ picPath }} alt={{ picName }}>
+    <a href="/post/{{ _id }}"> Link to Post</a>
+    <p>Description: {{ content }}</p>
+    <a>Posted By: {{ creatorId.name }}</a>
+{{/each}}
