@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = new Router();
-
+const uploadCloud = require('./../config/cloudinary.js');
 const User = require('./../models/user');
 const bcryptjs = require('bcryptjs');
 
@@ -12,15 +12,17 @@ router.get('/sign-up', (req, res, next) => {
   res.render('sign-up');
 });
 
-router.post('/sign-up', (req, res, next) => {
+router.post('/sign-up', uploadCloud.single('photo'), (req, res, next) => {
   const { name, email, password } = req.body;
+  const image = req.file.secure_url;
   bcryptjs
     .hash(password, 10)
     .then(hash => {
       return User.create({
         name,
         email,
-        passwordHash: hash
+        passwordHash: hash,
+        image
       });
     })
     .then(user => {
@@ -51,7 +53,7 @@ router.post('/sign-in', (req, res, next) => {
     .then(result => {
       if (result) {
         req.session.user = userId;
-        res.redirect('/');
+        res.redirect('/profile');
       } else {
         return Promise.reject(new Error('Wrong password.'));
       }
@@ -61,15 +63,15 @@ router.post('/sign-in', (req, res, next) => {
     });
 });
 
+router.get('/profile', (req, res, next) => {
+  const user = req.user;
+  res.render('profile', { user });
+});
+
 router.post('/sign-out', (req, res, next) => {
   req.session.destroy();
   res.redirect('/');
 });
 
-const routeGuard = require('./../middleware/route-guard');
-
-router.get('/private', routeGuard, (req, res, next) => {
-  res.render('private');
-});
 
 module.exports = router;
