@@ -12,6 +12,7 @@ const MongoStore = connectMongo(expressSession);
 
 const indexRouter = require('./routes/index');
 const authenticationRouter = require('./routes/authentication');
+const postRouter = require('./routes/post');
 const User = require('./models/user');
 
 const app = express();
@@ -26,8 +27,7 @@ app.use(
   sassMiddleware({
     src: join(__dirname, 'public'),
     dest: join(__dirname, 'public'),
-    outputStyle:
-      process.env.NODE_ENV === 'development' ? 'nested' : 'compressed',
+    outputStyle: process.env.NODE_ENV === 'development' ? 'nested' : 'compressed',
     sourceMap: false,
     force: true
   })
@@ -73,6 +73,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/', authenticationRouter);
+app.use('/post', postRouter);
 
 app.use('*', (req, res, next) => {
   const error = new Error('Page not found.');

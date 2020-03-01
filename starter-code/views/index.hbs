@@ -1,1 +1,11 @@
-<p>Welcome to our Lab!</p>
+<h1>All posts</h1>
+
+{{#each posts}}
+<a href="/post/{{_id}}">
+{{content}}
+<p>{{creatorId}}</p>
+<img src="{{picPath}}" alt="">
+{{picName}}
+</a>
+<br>
+{{/each}} 

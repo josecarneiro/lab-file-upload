@@ -13,6 +13,8 @@
       {{!-- Display relevant routes for non-authenticated vs. authenticated user --}}
       {{#if user}}
         <a href="/">{{user.name}}'s Profile</a>
+        <img src= {{user.imgPath}} alt="">
+        <a href="/{{user._id}}">Profile</a>
         <form action="/sign-out" method="POST">
           <button>Sign Out</button>
         </form>
@@ -24,3 +26,4 @@
     {{{body}}}
   </body>
 </html>
+

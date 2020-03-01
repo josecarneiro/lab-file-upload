@@ -3,6 +3,7 @@ const router = new Router();
 
 const User = require('./../models/user');
 const bcryptjs = require('bcryptjs');
+const uploadCloud = require('../cloudinary.js');
 
 router.get('/', (req, res, next) => {
   res.render('index');
@@ -12,17 +13,25 @@ router.get('/sign-up', (req, res, next) => {
   res.render('sign-up');
 });
 
-router.post('/sign-up', (req, res, next) => {
+router.post('/sign-up', uploadCloud.single('picture'), (req, res, next) => {
+  console.log(req.file);
+
   const { name, email, password } = req.body;
+
+  const imgPath = req.file.secure_url;
+  const imgName = req.file.originalname;
   bcryptjs
     .hash(password, 10)
     .then(hash => {
       return User.create({
         name,
         email,
-        passwordHash: hash
+        passwordHash: hash,
+        imgPath,
+        imgName
       });
     })
+
     .then(user => {
       req.session.user = user._id;
       res.redirect('/');
@@ -38,7 +47,7 @@ router.get('/sign-in', (req, res, next) => {
 
 router.post('/sign-in', (req, res, next) => {
   let userId;
-  const { email, password } = req.body;
+  const { email, password, picture } = req.body;
   User.findOne({ email })
     .then(user => {
       if (!user) {
