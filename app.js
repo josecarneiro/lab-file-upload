@@ -11,6 +11,8 @@ const MongoStore = connectMongo(expressSession);
 
 const indexRouter = require('./routes/index');
 const authenticationRouter = require('./routes/authentication');
+const postRouter = require('./routes/post');
+
 const User = require('./models/user');
 
 const app = express();
@@ -54,12 +56,12 @@ app.use((req, res, next) => {
   const userId = req.session.user;
   if (userId) {
     User.findById(userId)
-      .then(user => {
+      .then((user) => {
         req.user = user;
         res.locals.user = req.user;
         next();
       })
-      .catch(error => {
+      .catch((error) => {
         next(error);
       });
   } else {
@@ -69,7 +71,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/', authenticationRouter);
-
+app.use('/post', postRouter);
 app.use('*', (req, res, next) => {
   const error = new Error('Page not found.');
   error.status = 404;
